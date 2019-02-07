@@ -1,20 +1,18 @@
 pipeline {
-    agent any 
+  agent any
+
     stages {
-        stage('clean') { 
-            steps {
-                bat "mvn clean"
-            }
-        }
-        stage('Test') { 
-            steps {
-                bat "mvn test" 
-            }
-        }
-        stage('Deploy') { 
-            steps {
-                bat "mvn package"
-            }
-        }
+    stage('Build') {
+      steps {
+        sh "mvn package"
+      }
     }
+    
+    stage('Make Container') {
+      steps {
+      sh "docker build -t springg1 ."
+      sh "docker tag springg1 springg1:latest"
+      }
+    }
+  }
 }
